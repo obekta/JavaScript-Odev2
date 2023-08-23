@@ -73,40 +73,20 @@ function elementSelect(event) {
    
 }
 
-// let liCloseParent = document.querySelectorAll(".close")
+let liCloseParent = document.querySelector("#list")
 
-// liCloseParent.forEach((item) => {
-
-//     item.addEventListener("click", elementRemove)
-
-// })
-
-// function elementRemove(e) {
-
-//     if (e.target && e.target.classList.contains("close")) {
-
-//         e.preventDefault()
-
-//         e.target.parentnode.remove();
-
-//     }
-
-
-// }
-
-
-
-
-document.querySelector("#list").addEventListener("click", function (e) {
+liCloseParent.addEventListener("click", function (e) {
 
     if (e.target && e.target.classList.contains("close")) {
 
         e.preventDefault();
 
-        e.target.parentNode.remove(); // Remove the parent <li> element
+        e.target.parentNode.remove(); // Removing the parent <li> element
 
     }
 });
+
+// used event delegation to reach to the parent element and target the clicked element. (e.target meaning the clicked element!)
 
 
 
