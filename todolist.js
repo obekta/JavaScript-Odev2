@@ -41,11 +41,30 @@ function newElement(event) {
             liDOM.remove();
         }
 
+        successToast();
+
         }
+     
+    else {
+
+        errorToast();
+
+    }    
+
+}
+
+function errorToast() {
+
+    $(".toast.error").toast("show")
 
 }
 
 
+function successToast() {
+
+    $(".toast.success").toast("show")
+
+}
 
 
 let liClick = document.querySelectorAll(".listElement")
