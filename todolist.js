@@ -1,49 +1,45 @@
-let btnClick = document.querySelector("#liveToastBtn")
+const btnClick = document.querySelector("#liveToastBtn");
 
-btnClick.addEventListener("click", newElement)
+const listDOM = document.querySelector("#list");
+
+const INPUT_TODO = document.querySelector("#task");
+
+btnClick.addEventListener("click", newElement);
 
 function newElement(event) {
     
     event.preventDefault();
 
-    const INPUT_TODO = document.querySelector("#task")
-
-    if (INPUT_TODO.value && !(INPUT_TODO.value.trim().length === 0)) {
-
-        const listDOM = document.querySelector("#list")
+    if (INPUT_TODO.value.trim().length !== "") {
 
         const liDOM = document.createElement("li")
         
-        const liClose = document.createElement("span")
+        const liClose = document.createElement("span");
 
-        liDOM.innerHTML = INPUT_TODO.value
+        liDOM.innerHTML = INPUT_TODO.value;
 
-        liClose.innerHTML = "&times"
+        liClose.innerHTML = "&times";
 
-        liClose.classList.add("close")
+        liClose.classList.add("close");
 
-        liDOM.appendChild(liClose)
+        liDOM.appendChild(liClose);
         
-        liDOM.classList.add("listElement")
+        liDOM.classList.add("listElement");
 
-        listDOM.appendChild(liDOM)
+        listDOM.appendChild(liDOM);
+
+        // Save the task to localStorage
+        saveTaskToLocalStorage(INPUT_TODO.value);
 
         INPUT_TODO.value = "";
 
         liDOM.addEventListener("click", elementSelect);
 
-        liClose.addEventListener("click", closeClick)
-
-        function closeClick(e) {
-             
-            e.preventDefault()
-
-            liDOM.remove();
-        }
+        liClose.addEventListener("click", closeClick);        
 
         successToast();
 
-        }
+    }
      
     else {
 
@@ -52,6 +48,91 @@ function newElement(event) {
     }    
 
 }
+
+
+function closeClick(e) {
+
+    e.preventDefault();
+
+    const liDOM = e.target.parentNode;
+
+    // Remove the task from localStorage
+    removeTaskFromLocalStorage(liDOM.textContent);
+
+    liDOM.remove();
+      
+}
+
+function removeTaskFromLocalStorage(task) {
+
+    console.log("burasi calisiyor")
+
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    if (tasks.indexOf(task) !== -1) {
+
+        // Remove the task from the array
+        tasks.splice(taskIndex, 1);
+
+        // Update localStorage with the modified tasks array
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+        console.log("calisiyor")
+        
+    }   
+ 
+}
+
+function saveTaskToLocalStorage(task) {
+
+    let tasks = [];
+
+    if (localStorage.getItem('tasks')) {
+
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+
+    }    
+
+    tasks.push(task);
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+   
+    loadTasksFromLocalStorage();
+
+});
+
+function loadTasksFromLocalStorage() {
+
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    
+
+    tasks.forEach((task) => {        
+
+        const liDOM = document.createElement('li');
+
+        const liClose = document.createElement("span");
+
+        liDOM.innerHTML = task;
+
+        liClose.innerHTML = "&times";
+
+        liClose.classList.add("close");
+
+        liDOM.appendChild(liClose);
+        
+        liDOM.classList.add("listElement");
+
+        listDOM.appendChild(liDOM);
+
+        liDOM.addEventListener("click", elementSelect);
+
+        liClose.addEventListener("click", closeClick);      
+
+})}
+
 
 function errorToast() {
 
