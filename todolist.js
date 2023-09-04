@@ -8,7 +8,7 @@ function newElement(event) {
 
     const INPUT_TODO = document.querySelector("#task")
 
-    if (INPUT_TODO.value) {
+    if (INPUT_TODO.value && !(INPUT_TODO.value.trim().length === 0)) {
 
         const listDOM = document.querySelector("#list")
 
@@ -66,7 +66,6 @@ function successToast() {
 
 }
 
-
 let liClick = document.querySelectorAll(".listElement")
 
 liClick.forEach((item) => {
@@ -106,15 +105,3 @@ liCloseParent.addEventListener("click", function (e) {
 });
 
 // used event delegation to reach to the parent element and target the clicked element. (e.target meaning the clicked element!)
-
-
-
-
-
-
-
-
-
-
-
-
