@@ -10,7 +10,7 @@ function newElement(event) {
     
     event.preventDefault();
 
-    if (INPUT_TODO.value.trim().length !== "") {
+    if (INPUT_TODO.value.trim().length !== 0) {
 
         const liDOM = document.createElement("li")
         
@@ -28,14 +28,20 @@ function newElement(event) {
 
         listDOM.appendChild(liDOM);
 
-        // Save the task to localStorage
-        saveTaskToLocalStorage(INPUT_TODO.value);
-
         INPUT_TODO.value = "";
 
         liDOM.addEventListener("click", elementSelect);
 
-        liClose.addEventListener("click", closeClick);        
+        liClose.addEventListener("click", closeClick);    
+        
+        function closeClick(e) {
+
+            e.preventDefault();
+        
+            liDOM.remove();
+              
+        }
+        
 
         successToast();
 
@@ -50,96 +56,11 @@ function newElement(event) {
 }
 
 
-function closeClick(e) {
-
-    e.preventDefault();
-
-    const liDOM = e.target.parentNode;
-
-    // Remove the task from localStorage
-    removeTaskFromLocalStorage(liDOM.textContent);
-
-    liDOM.remove();
-      
-}
-
-function removeTaskFromLocalStorage(task) {
-
-    console.log("burasi calisiyor")
-
-    let tasks = JSON.parse(localStorage.getItem('tasks'));
-
-    if (tasks.indexOf(task) !== -1) {
-
-        // Remove the task from the array
-        tasks.splice(taskIndex, 1);
-
-        // Update localStorage with the modified tasks array
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-
-        console.log("calisiyor")
-        
-    }   
- 
-}
-
-function saveTaskToLocalStorage(task) {
-
-    let tasks = [];
-
-    if (localStorage.getItem('tasks')) {
-
-        tasks = JSON.parse(localStorage.getItem('tasks'));
-
-    }    
-
-    tasks.push(task);
-
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-   
-    loadTasksFromLocalStorage();
-
-});
-
-function loadTasksFromLocalStorage() {
-
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    
-
-    tasks.forEach((task) => {        
-
-        const liDOM = document.createElement('li');
-
-        const liClose = document.createElement("span");
-
-        liDOM.innerHTML = task;
-
-        liClose.innerHTML = "&times";
-
-        liClose.classList.add("close");
-
-        liDOM.appendChild(liClose);
-        
-        liDOM.classList.add("listElement");
-
-        listDOM.appendChild(liDOM);
-
-        liDOM.addEventListener("click", elementSelect);
-
-        liClose.addEventListener("click", closeClick);      
-
-})}
-
-
 function errorToast() {
 
     $(".toast.error").toast("show")
 
 }
-
 
 function successToast() {
 
